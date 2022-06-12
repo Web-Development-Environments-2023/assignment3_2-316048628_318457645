@@ -41,17 +41,16 @@ router.get("/fullDetails/:recipeId", async (req, res, next) => {
 router.post("", async (req, res, next) => {
   try {
     let recipe_details = {
-      id: req.body.id,
       title: req.body.title,
       readyInMinutes: req.body.readyInMinutes,
-      image: req.body.image,
+      imageUrl: req.body.imageUrl,
       popularity: req.body.popularity,
       vegan: req.body.vegan,
       vegetarian: req.body.vegetarian,
       glutenFree: req.body.glutenFree,
       ingredients: req.body.ingredients,
       instructions: req.body.instructions,
-      numOfServing: req.body.numOfServing,
+      numOfServings: req.body.numOfServings,
       user_id: req.session.user_id,
     };
     recipes_utils.addRecipeToDB(recipe_details);
