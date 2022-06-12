@@ -16,10 +16,7 @@ router.post("/Register", async (req, res, next) => {
       country: req.body.country,
       password: req.body.password,
       email: req.body.email,
-<<<<<<< Updated upstream
       // profilePic: req.body.profilePic
-=======
->>>>>>> Stashed changes
     };
     let users = [];
     users = await DButils.execQuery("SELECT username from users");

@@ -28,11 +28,7 @@ router.get("/:recipeId", async (req, res, next) => {
 /**
  * This path returns a full details of a recipe by its id
  */
-<<<<<<< Updated upstream
- router.get("/fullDetails/:recipeId", async (req, res, next) => {
-=======
 router.get("/fullDetails/:recipeId", async (req, res, next) => {
->>>>>>> Stashed changes
   try {
     const recipe = await recipes_utils.getRecipeFullDetails(req.params.recipeId);
     res.send(recipe);
@@ -40,8 +36,6 @@ router.get("/fullDetails/:recipeId", async (req, res, next) => {
     next(error);
   }
 });
-<<<<<<< Updated upstream
-=======
 
 
 router.post("", async (req, res, next) => {
@@ -67,5 +61,4 @@ router.post("", async (req, res, next) => {
   }
 });
 
->>>>>>> Stashed changes
 module.exports = router;
