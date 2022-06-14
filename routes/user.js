@@ -111,7 +111,7 @@ router.post("/myRecipes", async (req, res, next) => {
       numOfServings: req.body.numOfServings,
       user_id: req.session.user_id,
     };
-    recipes_utils.addRecipeToDB(recipe_details);
+    recipe_utils.addRecipeToDB(recipe_details);
     res.status(201).send({ message: "recipe created", success: true });
   } catch (error) {
     next(error);
