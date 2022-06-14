@@ -28,7 +28,7 @@ router.get("/search", async (req, res, next) => {
 
 
 
-router.get("/", (req, res) => res.send("im here"));
+// router.get("/", (req, res) => res.send("im here"));
 
 router.get("/random",async (req,res,next)=> {
   try{
@@ -40,7 +40,7 @@ router.get("/random",async (req,res,next)=> {
   }});
 
 /**
- * This path returns a full details of a recipe by its id
+ * This path returns a preview with details of a recipe by its id
  */
 router.get("/:recipeId", async (req, res, next) => {
   try {
@@ -62,29 +62,6 @@ router.get("/fullDetails/:recipeId", async (req, res, next) => {
     next(error);
   }
 });
-
-router.post("", async (req, res, next) => {
-  try {
-    let recipe_details = {
-      title: req.body.title,
-      readyInMinutes: req.body.readyInMinutes,
-      imageUrl: req.body.imageUrl,
-      popularity: req.body.popularity,
-      vegan: req.body.vegan,
-      vegetarian: req.body.vegetarian,
-      glutenFree: req.body.glutenFree,
-      ingredients: req.body.ingredients,
-      instructions: req.body.instructions,
-      numOfServings: req.body.numOfServings,
-      user_id: req.session.user_id,
-    };
-    recipes_utils.addRecipeToDB(recipe_details);
-    res.status(201).send({ message: "recipe created", success: true });
-  } catch (error) {
-    next(error);
-  }
-});
-
 
 
 module.exports = router;

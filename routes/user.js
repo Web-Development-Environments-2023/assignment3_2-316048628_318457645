@@ -86,13 +86,35 @@ router.get("/lastWatched", async (req, res, next) => {
 /**
  * This path returns the recipes that were created by the logged-in user
  */
- router.get('/myRecipes', async (req,res,next) => {
+router.get('/myRecipes', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;
     const results = await user_utils.getMyRecipes(user_id);
     res.status(200).send(results);
   } catch(error){
     next(error); 
+  }
+});
+
+router.post("/myRecipes", async (req, res, next) => {
+  try {
+    let recipe_details = {
+      title: req.body.title,
+      readyInMinutes: req.body.readyInMinutes,
+      imageUrl: req.body.imageUrl,
+      popularity: req.body.popularity,
+      vegan: req.body.vegan,
+      vegetarian: req.body.vegetarian,
+      glutenFree: req.body.glutenFree,
+      ingredients: req.body.ingredients,
+      instructions: req.body.instructions,
+      numOfServings: req.body.numOfServings,
+      user_id: req.session.user_id,
+    };
+    recipes_utils.addRecipeToDB(recipe_details);
+    res.status(201).send({ message: "recipe created", success: true });
+  } catch (error) {
+    next(error);
   }
 });
 
