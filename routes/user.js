@@ -27,7 +27,7 @@ router.use(async function (req, res, next) {
 router.post('/favorites', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;
-    const recipe_id = req.body.recipeId;
+    const recipe_id = req.body.recipe_id;
     await user_utils.markAsFavorite(user_id,recipe_id);
     res.status(200).send("The Recipe successfully saved as favorite");
     } catch(error){
@@ -52,6 +52,49 @@ router.get('/favorites', async (req,res,next) => {
   }
 });
 
+
+
+/**
+ * This path gets body with recipeId and Date and save this recipe in the last watched list of the logged-in user
+ */
+ router.post('/lastWatched', async (req,res,next) => {
+  try{
+    const user_id = req.session.user_id;
+    const recipe_id = req.body.recipe_id;
+    await user_utils.addToLastWatchedRecipes(user_id,recipe_id);
+    res.status(200).send("The recipe successfully added to last whatched recipes");
+    } catch(error){
+    next(error);
+  }
+})
+
+
+router.get("/lastWatched", async (req, res, next) => {
+  try {
+    const user_id = req.session.user_id;
+    const last_recipes_id = await user_utils.get3LastWatchedRecipes(user_id);
+    let last_recipes_array = [];
+    last_recipes_id.map((element) => last_recipes_array.push(element.recipe_id));
+    const last_watched = await recipe_utils.get3LastWatchedInfo(last_recipes_array);
+    res.status(200).send(last_watched);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+/**
+ * This path returns the recipes that were created by the logged-in user
+ */
+ router.get('/myRecipes', async (req,res,next) => {
+  try{
+    const user_id = req.session.user_id;
+    const results = await user_utils.getMyRecipes(user_id);
+    res.status(200).send(results);
+  } catch(error){
+    next(error); 
+  }
+});
 
 
 

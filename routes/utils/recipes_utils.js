@@ -20,6 +20,7 @@ async function getRecipeInformation(recipe_id) {
     });
 }
 
+
 async function getRecipeDetails(recipe_id) {
     let recipe_info = await getRecipeInformation(recipe_id);
     let { id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree } = recipe_info.data;
@@ -73,7 +74,47 @@ async function get3RandomRecipes()
 
 }
 
+async function getRecipesPreview(recipes_id_array){
+    let favorite_recipes_promises = [];
+    recipes_id_array.map((id) => favorite_recipes_promises.push(getRecipeDetails(id)) );
+    let favorite_recipes_prev = await Promise.all(favorite_recipes_promises);
+    return favorite_recipes_prev;
+}
+
+async function get3LastWatchedInfo(last_recipes_array)
+{
+    let watched_recipes_promises = [];
+    last_recipes_array.map((id) => watched_recipes_promises.push(getRecipeDetails(id)) );
+    let watched_recipes_info = await Promise.all(watched_recipes_promises);
+    return watched_recipes_info;
+}
+
+async function searchRecipes(query,number,cuisine,diet,intolerance) {
+    const result = await axios.get(`${api_domain}/complexSearch`, {
+        params: {
+            query: query,
+            number: number,
+            cuisine: cuisine,
+            diet: diet,
+            intolerance: intolerance,
+            apiKey: process.env.spooncular_apiKey
+        }
+    });
+    return result.data.results;
+}
+
+async function getFamilyRecipe()
+{
+    // const recipes_id = await DButils.execQuery(`select * from lastwatchedrecipes where user_id='${user_id}' ORDER BY date DESC LIMIT 3`);
+    const recipes = await DButils.execQuery(`select * from familyrecipes`);
+    return recipes;
+}
+
+exports.getFamilyRecipe = getFamilyRecipe;
 exports.getRecipeDetails = getRecipeDetails;
 exports.getRecipeFullDetails = getRecipeFullDetails;
 exports.addRecipeToDB = addRecipeToDB;
 exports.get3RandomRecipes = get3RandomRecipes;
+exports.get3LastWatchedInfo = get3LastWatchedInfo;
+exports.getRecipesPreview = getRecipesPreview;
+exports.searchRecipes = searchRecipes;

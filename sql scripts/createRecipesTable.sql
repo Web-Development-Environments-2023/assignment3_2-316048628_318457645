@@ -1,5 +1,5 @@
 CREATE TABLE newRecipes(  
-    id int PRIMARY KEY AUTO_INCREMENT,
+    recipe_id int PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     readyInMinutes VARCHAR(255) NOT NULL,
     imageUrl VARCHAR(255) NOT NULL,

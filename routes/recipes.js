@@ -2,6 +2,32 @@ var express = require("express");
 var router = express.Router();
 const recipes_utils = require("./utils/recipes_utils");
 
+router.get("/familyRecipes", async (req, res, next) => {
+  try {
+    const recipe = await recipes_utils.getFamilyRecipe();
+    res.send(recipe);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/search", async (req, res, next) => {
+  try{
+    let queryS = req.query.query;
+    let numOfRes = req.query.num;
+    let cuisine = req.query.cuisine;
+    let diet = req.query.diet;
+    let intolerance = req.query.intolerance;
+    let result = await recipes_utils.searchRecipes(queryS,numOfRes,cuisine,diet,intolerance);
+    res.status(200).send(result);
+  }
+  catch (error){
+    next(error);
+  }
+});
+
+
+
 router.get("/", (req, res) => res.send("im here"));
 
 router.get("/random",async (req,res,next)=> {
@@ -37,7 +63,6 @@ router.get("/fullDetails/:recipeId", async (req, res, next) => {
   }
 });
 
-
 router.post("", async (req, res, next) => {
   try {
     let recipe_details = {
@@ -59,5 +84,7 @@ router.post("", async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 module.exports = router;
