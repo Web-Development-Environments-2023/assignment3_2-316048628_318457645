@@ -1,0 +1,407 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/NavitB/RecipesAPI/1.0.0
+  - description: Recipes Site Server
+    url: https://132.73.84.134
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: Recipes API
+  contact:
+    name: Navit Branin, Tamar Tzuberi
+    email: navitb@post.bgu.ac.il
+tags:
+  - name: users
+    description: all the information and methods about users
+  - name: recipes
+    description: all the information and methods about recipes
+  - name: auth
+    description:  all authentication related routes
+paths:
+  /Register:
+    post:
+      tags:
+      - auth
+      summary: register a new user
+      operationId: registerUser
+      description: Adds a new user to the system
+      responses:
+        '201':
+          description: user added successfully
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing user already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+        required: true
+  /Login:
+    post:
+      tags:
+      - auth
+      summary: login with existing user
+      operationId: loginUser
+      description: user trying to log in with username and password
+      responses:
+        '201':
+          description: user logged in successfully
+        '400':
+          description: 'invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+  /Logout:
+    get:
+      tags:
+      - auth
+      summary: user logout from system
+      operationId: logoutUser
+      description: user requests to logout from the system
+      responses:
+        '200':
+          description: user logged out successfully
+        '401':
+          description: user must logged in before tryin logging out
+  /recipes/{recipeId}:
+    get:
+      tags:
+        - recipes
+      summary: system shows recipesID recipe page.
+      description: user requestes to get recipe info.
+      parameters:
+      - name: recipeId
+        in: path
+        description: numeric ID of the recipe id to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 45
+      responses:
+        '200':
+          description: showing recipe page successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipePreview'
+        '401':
+          description: wrong recipe id
+  /recipes/fullDetails/{recipeId}:
+    get:
+      tags:
+        - recipes
+      summary: system shows recipesID full recipe page.
+      description: user requestes to get recipe info.
+      parameters:
+      - name: recipeId
+        in: path
+        description: numeric ID of the recipe id to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 45
+      responses:
+        '200':
+          description: showing recipe page successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeFull'
+        '401':
+          description: wrong recipe id
+  /recipes/search/{searchQuery}:
+    get:
+      tags:
+        - recipes
+      summary: system shows recipes search results
+      description: user requests to search in recepies by search query.
+      parameters:
+      - name: searchQuery
+        in: path
+        description: the search query for searching a query in the API with name or part of the name of a recipe
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully returned recepies matching the query
+          content:
+           application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/RecipePreview'
+        '401':
+          description: bad request
+  /recipes/random:
+    get:
+      tags:
+        - recipes
+      summary: system shows three random recipes
+      description: on main page system will show three random recipes
+      responses:
+        '200':
+          description: Successfully returned recepies
+          content:
+           application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/RecipePreview'
+        '401':
+          description: bad request
+  /users/favorites:
+    post:
+      tags:
+        - users
+        - recipes
+      summary: system adds a recipe to user's favorites
+      description: user requests to add a recipe to his favorite recepies
+      responses:
+        '200':
+          description: Successfully added user's favorite recipe
+        '401':
+          description: bad request
+    get:
+      tags:
+        - users
+      summary: system shows user's favorite recipes
+      description: user requests to show his favorite recepies
+      responses:
+        '200':
+          description: Successfully returned user's favorite recepies 
+          content:
+           application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/RecipePreview'
+        '401':
+          description: bad request
+  /users/lastWatched:
+    post:
+      tags:
+        - users
+        - recipes
+      summary: system adds a recipe to user's last watched recipes
+      description: user watched a recipe and the system adds to user's last watched
+      responses:
+        '200':
+          description: Successfully added recipe to user's last watched 
+        '401':
+          description: bad request
+    get:
+      tags:
+        - users
+        - recipes
+      summary: system shows user's last watched recipes
+      description: on main page system will show user's three last watched recipes
+      responses:
+        '200':
+          description: Successfully returned user's last watched recepies 
+          content:
+           application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/RecipePreview'
+        '401':
+          description: bad request
+  /users/myRecipes:
+    post:
+      tags:
+      - recipes
+      summary: create new recipe
+      operationId: addRecipe
+      description: user creating a new recipe and then added to system
+      responses:
+        '201':
+          description: system added recipe to DB
+        '400':
+          description: 'invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeFull'
+        required: true
+    get:
+      tags:
+        - users
+        - recipes
+      summary: system shows user's recipes
+      description: user requested to show his recipes in My recipes page
+      responses:
+        '200':
+          description: Successfully returned user's recepies 
+          content:
+           application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/RecipePreview'
+        '401':
+          description: bad request
+components:
+  schemas:
+    Users:
+      type: object
+      required:
+        - username
+        - firstName
+        - lastName
+        - country
+        - password
+        - email
+      description: user's information to register
+      properties:
+        username:
+          maxLength: 8
+          minLength: 3
+          type: string
+          example: navitb
+        first name:
+          type: string
+          description: user's first name
+          example: Navit
+        last name:
+          type: string
+          description: user's last name
+          example: Branin
+        country:
+          $ref: 'https://restcountries.com/v3.1/all'
+        password:
+          type: string
+          maxLength: 10
+          minLength: 5
+          format: password
+          example: navit12345!
+        email:
+          type: string
+          description: user's email
+          format: email
+          example: navitb@post.bgu.ac.il
+    Login:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          maxLength: 8
+          minLength: 3
+          type: string
+          example: navitb
+        password:
+          type: string
+          maxLength: 10
+          minLength: 5
+          format: password
+          example: navit12345!
+    RecipePreview:
+      required:
+         - img-url
+         - name
+         - preparation time
+         - likes
+         - veg
+         - gluten
+         - viewed
+         - favorite
+      type: object
+      properties:
+        img-url:
+          type: string
+          description: URL for the recipe's image
+          example: https://sallysbakingaddiction.com/wp-content/uploads/2021/01/chocolate-souffles.jpg.webp
+        name:
+          type: string
+          description: recipe's name
+          example: Chocolate Souffle
+        preparation time:
+          type: string
+          description: the time that takes to make the receipe
+          example: 40 min
+        likes:
+          type: integer
+          description: The number of likes on a recipe
+          example: 40 likes
+        veg:
+          type: string
+          description: if the recipe is vegeterian or vegan
+          example: vegan
+        gluten:
+          type: boolean
+          description: if the recipe is gluten free
+        viewed:
+          type: boolean
+          description: if the user already viewed the recipe
+        favorite:
+          type: boolean
+          description: if the recipe is added to user favorites
+    RecipeFull:
+      required:
+         - img-url
+         - name
+         - preparation time
+         - popularity
+         - veg
+         - gluten
+         - viewed
+         - favorite
+         - ingredients
+         - instructions
+         - num of dishes
+      type: object
+      properties:
+        img-url:
+          type: string
+          description: URL for the recipe's image
+          example: https://sallysbakingaddiction.com/wp-content/uploads/2021/01/chocolate-souffles.jpg.webp
+        name:
+          type: string
+          description: recipe's name
+          example: Chocolate Souffle
+        preparation time:
+          type: string
+          description: the time that takes to make the receipe
+          example: 40 min
+        likes:
+          type: integer
+          description: The number of likes on a recipe
+          example: 40 likes
+        veg:
+          type: string
+          description: if the recipe is vegeterian or vegan
+          example: vegan
+        gluten:
+          type: boolean
+          description: if the recipe is gluten free
+        viewed:
+          type: boolean
+          description: if the user already viewed the recipe
+        favorite:
+          type: boolean
+          description: if the recipe is added to user favorites
+        ingredients:
+          type: string
+          description: the ingredients and amount of the recipe 
+        instructions:
+          type: string
+          description: instruction for how to prepare the recipe
+        num of dishes:
+          type: integer
+          description: amount of dishes for this recipe
