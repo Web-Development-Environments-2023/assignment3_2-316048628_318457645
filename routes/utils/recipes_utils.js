@@ -54,6 +54,21 @@ async function getRecipeFullDetails(recipe_id) {
     }
 }
 
+async function getRecipeFullDetailsFamily(recipe_id) {
+    let recipe = await DButils.execQuery(`select * from familyrecipes where recipe_id='${recipe_id}'`);
+    let { id, title, recipeOwner, readyInMinutes, image, extendedIngredients, analyzedInstructions, user_id } = recipe;
+    return {
+        id: id,
+        title: title,
+        recipeOwner: recipeOwner,
+        readyInMinutes: readyInMinutes,
+        image: image,
+        ingredients: extendedIngredients,
+        instructions: analyzedInstructions,
+    }
+}
+
+
 async function addRecipeToDB(recipe_details)
 {
     await DButils.execQuery(
@@ -84,8 +99,12 @@ async function getRecipesPreview(recipes_id_array){
 async function get3LastWatchedInfo(last_recipes_array)
 {
     let watched_recipes_promises = [];
+    console.log("in recipe utils",last_recipes_array);
     last_recipes_array.map((id) => watched_recipes_promises.push(getRecipeDetails(id)) );
+    console.log("in recipe utils :watched_recipes_promises ",watched_recipes_promises);
     let watched_recipes_info = await Promise.all(watched_recipes_promises);
+    console.log("in recipe utils :watched_recipes_info ",watched_recipes_info);
+
     return watched_recipes_info;
 }
 
@@ -118,3 +137,4 @@ exports.get3RandomRecipes = get3RandomRecipes;
 exports.get3LastWatchedInfo = get3LastWatchedInfo;
 exports.getRecipesPreview = getRecipesPreview;
 exports.searchRecipes = searchRecipes;
+exports.getRecipeFullDetailsFamily = getRecipeFullDetailsFamily;

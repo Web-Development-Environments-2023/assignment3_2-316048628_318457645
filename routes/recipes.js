@@ -63,5 +63,16 @@ router.get("/fullDetails/:recipeId", async (req, res, next) => {
   }
 });
 
+/**
+ * This path returns a full details of a recipe by its id from the DB
+ */
+ router.get("/fullDetails/family/:recipeId", async (req, res, next) => {
+  try {
+    const recipe = await recipes_utils.getRecipeFullDetailsFamily(req.params.recipeId);
+    res.send(recipe);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

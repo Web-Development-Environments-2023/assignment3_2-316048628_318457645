@@ -72,11 +72,35 @@ router.get('/favorites', async (req,res,next) => {
 router.get("/lastWatched", async (req, res, next) => {
   try {
     const user_id = req.session.user_id;
+    console.log("In users. get last...",user_id);
     const last_recipes_id = await user_utils.get3LastWatchedRecipes(user_id);
+    console.log("last recipes id",last_recipes_id);
     let last_recipes_array = [];
     last_recipes_id.map((element) => last_recipes_array.push(element.recipe_id));
+    console.log("after map in users",last_recipes_array);
     const last_watched = await recipe_utils.get3LastWatchedInfo(last_recipes_array);
+    console.log("last_watched info",last_watched);
     res.status(200).send(last_watched);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+router.get("/lastWatched/:recipeId", async (req, res, next) => {
+  try {
+    const user_id = req.session.user_id;
+    console.log("In users. get last...",user_id);
+    const recipe = await user_utils.checkIfRecipeInLastWatched(user_id,req.params.recipeId);
+    console.log("response recipe :",recipe);
+    const seen_recipe=[];
+    if (typeof recipe !== 'undefined')
+    {
+      console.log("recipe is not undefined")
+      seen_recipe.push(recipe);
+    }
+    console.log("seen_recipe",seen_recipe);
+    res.status(200).send(seen_recipe);
   } catch (error) {
     next(error);
   }
