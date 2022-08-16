@@ -1,1 +1,2 @@
-select * from lastwatchedrecipes where user_id=1 AND date IN(SELECT MAX(date) FROM lastwatchedrecipes GROUP BY recipe_id) ORDER BY date DESC LIMIT 3
+-- select * from lastwatchedrecipes where user_id=2 AND date IN(SELECT MAX(date) FROM lastwatchedrecipes GROUP BY recipe_id) ORDER BY date DESC LIMIT 3
+select * from lastwatchedrecipes where user_id=1 AND recipe_id=1344
