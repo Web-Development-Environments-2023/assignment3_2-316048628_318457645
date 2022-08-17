@@ -126,7 +126,7 @@ router.post("/myRecipes", async (req, res, next) => {
       title: req.body.title,
       readyInMinutes: req.body.readyInMinutes,
       imageUrl: req.body.imageUrl,
-      popularity: req.body.popularity,
+      aggregateLikes: req.body.aggregateLikes,
       vegan: req.body.vegan,
       vegetarian: req.body.vegetarian,
       glutenFree: req.body.glutenFree,

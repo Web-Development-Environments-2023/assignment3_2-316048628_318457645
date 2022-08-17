@@ -3,7 +3,7 @@ CREATE TABLE newRecipes(
     title VARCHAR(255) NOT NULL,
     readyInMinutes VARCHAR(255) NOT NULL,
     imageUrl VARCHAR(255) NOT NULL,
-    popularity INT NOT NULL,
+    aggregateLikes INT NOT NULL,
     vegan BOOLEAN NOT NULL,
     vegetarian BOOLEAN NOT NULL,
     glutenFree BOOLEAN NOT NULL,

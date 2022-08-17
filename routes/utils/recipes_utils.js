@@ -29,7 +29,7 @@ async function getRecipeDetails(recipe_id) {
         title: title,
         readyInMinutes: readyInMinutes,
         image: image,
-        popularity: aggregateLikes,
+        aggregateLikes: aggregateLikes,
         vegan: vegan,
         vegetarian: vegetarian,
         glutenFree: glutenFree,   
@@ -44,7 +44,7 @@ async function getRecipeFullDetails(recipe_id) {
         title: title,
         readyInMinutes: readyInMinutes,
         image: image,
-        popularity: aggregateLikes,
+        aggregateLikes: aggregateLikes,
         vegan: vegan,
         vegetarian: vegetarian,
         glutenFree: glutenFree,
@@ -56,13 +56,13 @@ async function getRecipeFullDetails(recipe_id) {
 
 async function getRecipeFullDetailsFamily(recipe_id) {
     let recipe = await DButils.execQuery(`select * from familyrecipes where recipe_id='${recipe_id}'`);
-    let { id, title, recipeOwner, readyInMinutes, image, extendedIngredients, analyzedInstructions, user_id } = recipe;
+    let { id, title, recipeOwner, readyInMinutes, imageUrl, extendedIngredients, analyzedInstructions, user_id } = recipe;
     return {
         id: id,
         title: title,
         recipeOwner: recipeOwner,
         readyInMinutes: readyInMinutes,
-        image: image,
+        imageUrl: imageUrl,
         ingredients: extendedIngredients,
         instructions: analyzedInstructions,
     }
@@ -72,8 +72,8 @@ async function getRecipeFullDetailsFamily(recipe_id) {
 async function addRecipeToDB(recipe_details)
 {
     await DButils.execQuery(
-        `INSERT INTO newRecipes (title, readyInMinutes, imageUrl, popularity, vegan, vegetarian, glutenFree, ingredients, instructions, numOfServings, user_id) VALUES ('${recipe_details.title}', '${recipe_details.readyInMinutes}',
-        '${recipe_details.imageUrl}', '${recipe_details.popularity}', '${recipe_details.vegan}', '${recipe_details.vegetarian}', '${recipe_details.glutenFree}', '${recipe_details.ingredients}', '${recipe_details.instructions}' , '${recipe_details.numOfServings}', '${recipe_details.user_id}')`
+        `INSERT INTO newRecipes (title, readyInMinutes, imageUrl, aggregateLikes, vegan, vegetarian, glutenFree, ingredients, instructions, numOfServings, user_id) VALUES ('${recipe_details.title}', '${recipe_details.readyInMinutes}',
+        '${recipe_details.imageUrl}', '${recipe_details.aggregateLikes}', '${recipe_details.vegan}', '${recipe_details.vegetarian}', '${recipe_details.glutenFree}', '${recipe_details.ingredients}', '${recipe_details.instructions}' , '${recipe_details.numOfServings}', '${recipe_details.user_id}')`
         );
 }
 

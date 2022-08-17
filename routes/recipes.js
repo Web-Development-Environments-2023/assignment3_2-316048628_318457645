@@ -18,13 +18,18 @@ router.get("/search", async (req, res, next) => {
     let cuisine = req.query.cuisine;
     let diet = req.query.diet;
     let intolerance = req.query.intolerance;
-    let result = await recipes_utils.searchRecipes(queryS,numOfRes,cuisine,diet,intolerance);
+    let search_result = await recipes_utils.searchRecipes(queryS,numOfRes,cuisine,diet,intolerance);
+    console.log("search_result",search_result);
+    const recipes_id_array = search_result.map(r => r.id);
+    console.log("recipes_id_array",recipes_id_array);
+    const result = await recipes_utils.getRecipesPreview(recipes_id_array);
     res.status(200).send(result);
   }
   catch (error){
     next(error);
   }
 });
+
 
 
 

@@ -357,7 +357,7 @@ components:
          - img-url
          - name
          - preparation time
-         - popularity
+         - aggregateLikes
          - veg
          - gluten
          - viewed
